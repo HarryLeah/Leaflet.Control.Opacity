@@ -134,14 +134,14 @@ L.Control.Opacity = L.Control.extend({
         input.layerId = L.Util.stamp(obj.layer);
         // スライドバーイベント
         input.addEventListener('input', (event) => {
-            const rgValue = event.target.value;
-            const layer = this._getLayer(input.layerId).layer;
-            // 背景ラスタのみ対象
-            if (typeof layer._url === 'undefined') {
-            } else {
-                // 透過度設定
-                layer.setOpacity(Number(rgValue / 100));
-            }
+          const rgValue = event.target.value;
+          const layer = this._getLayer(input.layerId).layer;
+          if (this.options.vectorLayerOpacity) {                    // added line
+            this.options.vectorLayerOpacity(layer, rgValue / 100);  // added line
+          } else if (typeof layer._url === 'undefined') {
+          } else {
+            layer.setOpacity(Number(rgValue / 100));
+          }
         });
         const name = document.createElement('span');
         name.innerHTML = ' ' + obj.name;
