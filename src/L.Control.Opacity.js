@@ -134,14 +134,17 @@ L.Control.Opacity = L.Control.extend({
         input.layerId = L.Util.stamp(obj.layer);
         // スライドバーイベント
         input.addEventListener('input', (event) => {
-          const rgValue = event.target.value;
-          const layer = this._getLayer(input.layerId).layer;
-          if (typeof layer._url === 'undefined') {
+            const rgValue = event.target.value;
+            const layer = this._getLayer(input.layerId).layer;
+            if (typeof layer._url === 'undefined') {
+                if (typeof layer.options.url !== 'undefined') {
+                    layer.setOpacity(Number(rgValue / 100));
+                }         
             } else if ((typeof layer.setStyle === "function") && (this.options.vectorLayerOpacity)) {             // added line
                 this.options.vectorLayerOpacity(layer, rgValue / 100);  // added line
-            } else {
-                layer.setOpacity(Number(rgValue / 100));
-            }
+                } else {
+            layer.setOpacity(Number(rgValue / 100));
+        }
         });
         const name = document.createElement('span');
         name.innerHTML = ' ' + obj.name;
